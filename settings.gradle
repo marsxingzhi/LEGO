@@ -1,0 +1,3 @@
+include ':lego'
+include ':app'
+rootProject.name = "LEGO"

@@ -1,2 +1,2 @@
 # LEGO
-StartUp
+Startup
