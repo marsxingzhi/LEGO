@@ -23,7 +23,7 @@ class TaskManager private constructor(builder: Builder) {
 //                mExecutors.execute(TaskRunnable(it))
                 it.createExecutor().execute(TaskRunnable(it))
             } else {
-                it.performTask()
+                it.run()
             }
         }
     }

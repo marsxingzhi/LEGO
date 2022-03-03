@@ -11,6 +11,27 @@ abstract class AbstractTask<T> : ITask<T>, IExecutor {
 
     private val preTaskCountDownLatch by lazy { CountDownLatch(getDependencySize()) }
 
+    /**
+     * 任务执行，可分成3个阶段
+     */
+    override fun run(): T? {
+        prePerformTask()
+        val result = performTask()
+        postPerformTask()
+        return result
+    }
+
+    abstract fun performTask(): T?
+
+    private fun postPerformTask() {
+//        onNotify()
+    }
+
+    private fun prePerformTask() {
+//        onWait()
+    }
+
+
     override fun dependOn(): List<Class<out ITask<*>>>? {
         return null
     }

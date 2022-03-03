@@ -6,6 +6,6 @@ package com.mars.infra.lego
 class TaskRunnable(private val task: ITask<*>): Runnable {
 
     override fun run() {
-        task.performTask()
+        task.run()
     }
 }

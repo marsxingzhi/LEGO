@@ -8,7 +8,9 @@ interface ITask<T> {
     /**
      * 任务执行
      */
-    fun performTask(): T?
+//    fun performTask(): T?
+
+    fun run(): T?
 
     /**
      * 当前任务依赖哪些任务，即前序任务
