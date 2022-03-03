@@ -40,4 +40,6 @@ interface ITask<T> {
      */
     fun onNotify()
 
+    fun getTaskName(): String
+
 }

@@ -1,6 +1,8 @@
-package com.mars.infra.lego
+package com.mars.infra.lego.test
 
 import android.util.Log
+import com.mars.infra.lego.AbstractTask
+import com.mars.infra.lego.ITask
 
 /**
  * Created by Mars on 2022/3/2
@@ -16,5 +18,17 @@ class DemoThirdTask: AbstractTask<Int>() {
 
         Log.e("gy", "DemoThirdTask performTask invoke, and spend $time ms")
         return -1
+    }
+
+    override fun dependOn(): List<Class<out ITask<*>>> {
+        return arrayListOf(DemoFirstTask::class.java)
+    }
+
+    override fun callOnMainThread(): Boolean {
+        return false
+    }
+
+    override fun getTaskName(): String {
+        return DemoThirdTask::class.java.name
     }
 }

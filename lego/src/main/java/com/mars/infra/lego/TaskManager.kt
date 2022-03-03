@@ -9,16 +9,19 @@ import java.util.concurrent.Executors
 class TaskManager private constructor(builder: Builder) {
 
     private val mTaskList by lazy { mutableListOf<ITask<*>>() }
-    private val mExecutors by lazy { Executors.newCachedThreadPool() }
+//    private val mExecutors by lazy { Executors.newCachedThreadPool() }
 
     init {
         mTaskList.addAll(builder.taskList)
     }
 
     fun start() {
-        TopologyStrategy.sort(mTaskList).forEach {
+        TopologyStrategy.sort(mTaskList).result
+            .filterIsInstance(AbstractTask::class.java)
+            .forEach {
             if (!it.callOnMainThread()) {
-                mExecutors.execute(TaskRunnable(it))
+//                mExecutors.execute(TaskRunnable(it))
+                it.createExecutor().execute(TaskRunnable(it))
             } else {
                 it.performTask()
             }

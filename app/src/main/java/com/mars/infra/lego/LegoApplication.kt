@@ -10,10 +10,10 @@ class LegoApplication: Application() {
     override fun onCreate() {
         super.onCreate()
 
-        TaskManager.Builder()
-            .addTask(DemoFirstTask())
-            .addTasks(arrayListOf(DemoSecondTask(), DemoThirdTask()))
-            .build()
-            .start()
+//        TaskManager.Builder()
+//            .addTask(DemoFirstTask())
+//            .addTasks(arrayListOf(DemoSecondTask(), DemoThirdTask()))
+//            .build()
+//            .start()
     }
 }
