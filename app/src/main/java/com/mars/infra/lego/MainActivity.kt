@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
             .addTasks(arrayListOf(DemoSecondTask(), DemoThirdTask()))
             .build()
             .start()
+            .awaitMainThread()
     }
 
 }

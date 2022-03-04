@@ -1,5 +1,7 @@
 package com.mars.infra.lego
 
+import com.mars.infra.lego.dispatch.TaskDispatcher
+
 /**
  * Created by Mars on 2/28/22
  */
@@ -8,9 +10,7 @@ interface ITask<T> {
     /**
      * 任务执行
      */
-//    fun performTask(): T?
-
-    fun run(): T?
+    fun run(dispatcher: TaskDispatcher): T?
 
     /**
      * 当前任务依赖哪些任务，即前序任务
@@ -28,7 +28,7 @@ interface ITask<T> {
     fun callOnMainThread(): Boolean
 
     /**
-     * 是否阻塞主线程
+     * 是否阻塞主线程，如果返回true，表示主线程需等待该任务完成后，才能执行
      */
     fun blockMainThread(): Boolean
 

@@ -1,5 +1,6 @@
 package com.mars.infra.lego
 
+import com.mars.infra.lego.dispatch.TaskDispatcher
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -10,11 +11,13 @@ import java.util.concurrent.Executors
 abstract class AbstractTask<T> : ITask<T>, IExecutor {
 
     private val preTaskCountDownLatch by lazy { CountDownLatch(getDependencySize()) }
+    private lateinit var mDispatcher: TaskDispatcher
 
     /**
      * 任务执行，可分成3个阶段
      */
-    override fun run(): T? {
+    override fun run(dispatcher: TaskDispatcher): T? {
+        mDispatcher = dispatcher
         prePerformTask()
         val result = performTask()
         postPerformTask()
@@ -25,10 +28,13 @@ abstract class AbstractTask<T> : ITask<T>, IExecutor {
 
     private fun postPerformTask() {
 //        onNotify()
+        // 当前任务执行完成后，需要告诉其后序任务，后序任务的计数器需减1
+        mDispatcher.notifyPostTask(getTaskName())
     }
 
     private fun prePerformTask() {
-//        onWait()
+        // 先执行wait操作，如果计数器为0，则直接执行任务；如果不为0，会阻塞住当前任务的执行
+        onWait()
     }
 
 
