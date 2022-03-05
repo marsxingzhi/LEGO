@@ -1,6 +1,7 @@
 package com.mars.infra.lego
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.mars.infra.lego.test.*
@@ -16,7 +17,9 @@ class MainActivity : AppCompatActivity() {
         mBtnTestTopology = findViewById(R.id.btn_test_topology)
 
         mBtnTestTopology.setOnClickListener {
+            Log.e("gy", "before testTopology")
             testTopology()
+            Log.e("gy", "after testTopology")
         }
     }
 

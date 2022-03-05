@@ -13,7 +13,7 @@ class DemoFiveTask: AbstractTask<Unit>() {
 
     override fun performTask(): Unit? {
         time -= System.currentTimeMillis()
-        Thread.sleep(200)
+        Thread.sleep(2000)
         time += System.currentTimeMillis()
         Log.e("gy", "DemoFiveTask performTask invoke, and spend $time ms")
         return null
@@ -25,6 +25,10 @@ class DemoFiveTask: AbstractTask<Unit>() {
 
     override fun callOnMainThread(): Boolean {
         return false
+    }
+
+    override fun blockMainThread(): Boolean {
+        return true
     }
 
     override fun getTaskName(): String {

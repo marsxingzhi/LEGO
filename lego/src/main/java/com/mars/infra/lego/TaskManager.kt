@@ -1,5 +1,6 @@
 package com.mars.infra.lego
 
+import android.os.Looper
 import android.util.Log
 import com.mars.infra.lego.dispatch.TaskDispatcher
 import com.mars.infra.lego.sort.TopologyStrategy
@@ -25,15 +26,15 @@ class TaskManager private constructor(builder: Builder) {
         mTaskList.forEach {
             if (!it.callOnMainThread() && it.blockMainThread()) {
                 mNeedWaitMainThreadCount.incrementAndGet()
-                Log.e(
-                    "gy",
-                    "TaskManager---mNeedWaitMainThreadCount = ${mNeedWaitMainThreadCount.get()}"
-                )
+                Log.e("gy", "TaskManager---mNeedWaitMainThreadCount = ${mNeedWaitMainThreadCount.get()}")
             }
         }
     }
 
     fun start(): TaskManager {
+        if (Looper.myLooper() != Looper.getMainLooper()) {
+            throw Exception("start method must be invoked in main thread")
+        }
 //        TopologyStrategy.sort(mTaskList).result
 //            .filterIsInstance(AbstractTask::class.java)
 //            .forEach {
@@ -47,7 +48,7 @@ class TaskManager private constructor(builder: Builder) {
         awaitMainThreadCountDown = CountDownLatch(mNeedWaitMainThreadCount.get())
 
         TopologyStrategy.sort(mTaskList).run {
-            mDispatcher.prepare(this)
+            mDispatcher.prepare(this, awaitMainThreadCountDown, mNeedWaitMainThreadCount)
             this.result.filterIsInstance(AbstractTask::class.java).run {
                 mDispatcher.dispatch(this)
             }
@@ -61,7 +62,7 @@ class TaskManager private constructor(builder: Builder) {
     fun awaitMainThread() {
        try {
            // await，超时操作
-           awaitMainThreadCountDown.await(1000, TimeUnit.MILLISECONDS)
+           awaitMainThreadCountDown.await(10000, TimeUnit.MILLISECONDS)
        } catch (e: Exception) {
            e.printStackTrace()
        }
