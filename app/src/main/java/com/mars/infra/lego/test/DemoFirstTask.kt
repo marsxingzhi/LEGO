@@ -2,6 +2,8 @@ package com.mars.infra.lego.test
 
 import android.util.Log
 import com.mars.infra.lego.AbstractTask
+import com.mars.infra.lego.LegoExecutors
+import java.util.concurrent.ExecutorService
 
 /**
  * Created by geyan01 on 2/28/22
@@ -25,5 +27,9 @@ class DemoFirstTask: AbstractTask<String>() {
 
     override fun getTaskName(): String {
         return DemoFirstTask::class.java.name
+    }
+
+    override fun createExecutor(): ExecutorService {
+        return LegoExecutors.defaultExecutors
     }
 }
