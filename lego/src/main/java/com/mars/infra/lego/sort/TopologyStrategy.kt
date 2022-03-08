@@ -1,6 +1,6 @@
 package com.mars.infra.lego.sort
 
-import com.mars.infra.lego.ITask
+import com.mars.infra.lego.api.ITask
 import java.util.ArrayDeque
 
 /**

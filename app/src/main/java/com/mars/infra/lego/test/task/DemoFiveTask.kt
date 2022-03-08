@@ -1,22 +1,17 @@
-package com.mars.infra.lego.test
+package com.mars.infra.lego.test.task
 
-import android.util.Log
 import com.mars.infra.lego.AbstractTask
-import com.mars.infra.lego.ITask
+import com.mars.infra.lego.api.ITask
+import com.mars.infra.lego.test.action.FiveAction
 
 /**
  * Created by Mars on 2022/3/2
  */
 class DemoFiveTask: AbstractTask<Unit>() {
 
-    private var time: Long = 0
-
-    override fun performTask(): Unit? {
-        time -= System.currentTimeMillis()
-        Thread.sleep(2000)
-        time += System.currentTimeMillis()
-        Log.e("gy", "DemoFiveTask performTask invoke, and spend $time ms")
-        return null
+    override fun performTask() {
+        val fiveAction = FiveAction()
+        fiveAction.performAction()
     }
 
     override fun dependOn(): List<Class<out ITask<*>>> {

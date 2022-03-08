@@ -1,9 +1,9 @@
 package com.mars.infra.lego
 
+import com.mars.infra.lego.api.ITask
 import com.mars.infra.lego.dispatch.TaskDispatcher
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 
 /**
  * Created by Mars on 2/28/22
@@ -24,7 +24,7 @@ abstract class AbstractTask<T> : ITask<T>, IExecutor {
         return result
     }
 
-    abstract fun performTask(): T?
+    abstract fun performTask(): T
 
     private fun postPerformTask() {
 //        onNotify()

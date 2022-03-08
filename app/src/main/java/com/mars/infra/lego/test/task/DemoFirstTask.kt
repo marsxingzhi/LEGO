@@ -1,8 +1,8 @@
-package com.mars.infra.lego.test
+package com.mars.infra.lego.test.task
 
-import android.util.Log
 import com.mars.infra.lego.AbstractTask
 import com.mars.infra.lego.LegoExecutors
+import com.mars.infra.lego.test.action.FirstAction
 import java.util.concurrent.ExecutorService
 
 /**
@@ -10,15 +10,9 @@ import java.util.concurrent.ExecutorService
  */
 class DemoFirstTask: AbstractTask<String>() {
 
-    private var time: Long = 0
-
     override fun performTask(): String {
-        time -= System.currentTimeMillis()
-        Thread.sleep(100)
-        time += System.currentTimeMillis()
-
-        Log.e("gy", "DemoFirstTask performTask invoke, and spend $time ms")
-        return "DemoFirstTask"
+        val firstAction = FirstAction()
+        return firstAction.performAction()
     }
 
     override fun callOnMainThread(): Boolean {

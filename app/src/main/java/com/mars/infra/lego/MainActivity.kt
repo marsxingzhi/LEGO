@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import com.mars.infra.lego.test.*
+import com.mars.infra.lego.test.task.*
 
 class MainActivity : AppCompatActivity() {
 

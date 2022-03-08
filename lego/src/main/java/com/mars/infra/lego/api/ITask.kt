@@ -1,4 +1,4 @@
-package com.mars.infra.lego
+package com.mars.infra.lego.api
 
 import com.mars.infra.lego.dispatch.TaskDispatcher
 

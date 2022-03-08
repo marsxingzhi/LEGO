@@ -1,5 +1,6 @@
 package com.mars.infra.lego
 
+import com.mars.infra.lego.api.ITask
 import com.mars.infra.lego.dispatch.TaskDispatcher
 
 /**
