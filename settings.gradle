@@ -1,3 +1,5 @@
 include ':lego'
 include ':app'
 rootProject.name = "LEGO"
+include ':lego-annotations'
+include ':lego-compiler'
