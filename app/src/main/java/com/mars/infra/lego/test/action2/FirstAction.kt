@@ -1,6 +1,6 @@
 package com.mars.infra.lego.test.action2
 
-import com.mars.infra.lego.annotations.Task
+import com.mars.infra.lego.annotation.Task
 import com.mars.infra.lego.api.Action
 
 /**
@@ -8,7 +8,7 @@ import com.mars.infra.lego.api.Action
  *
  * 利用注解，自动生成start task
  */
-@Task(name = "FirstGenerateTask")
+@Task(name = "FirstGenerateTask", typeVariable = "kotlin.Boolean")
 class FirstAction: Action<Boolean> {
 
     override fun performAction(): Boolean {
