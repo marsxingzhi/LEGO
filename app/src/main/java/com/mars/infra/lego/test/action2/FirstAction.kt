@@ -1,6 +1,7 @@
 package com.mars.infra.lego.test.action2
 
 import android.util.Log
+import com.mars.infra.lego.annotation.TYPE_BOOLEAN
 import com.mars.infra.lego.annotation.Task
 import com.mars.infra.lego.api.Action
 
@@ -9,7 +10,7 @@ import com.mars.infra.lego.api.Action
  *
  * 利用注解，自动生成start task
  */
-@Task(name = "FirstGenerateTask", typeVariable = "kotlin.Boolean")
+@Task(name = "FirstGenerateTask", typeVariable = TYPE_BOOLEAN)
 class FirstAction: Action<Boolean> {
 
     override fun performAction(): Boolean {

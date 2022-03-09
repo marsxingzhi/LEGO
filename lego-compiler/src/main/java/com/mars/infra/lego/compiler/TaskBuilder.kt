@@ -1,6 +1,7 @@
 package com.mars.infra.lego.compiler
 
 import com.mars.infra.lego.annotation.Task
+import com.mars.infra.lego.compiler.ext.no
 import com.mars.infra.lego.compiler.ext.yes
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
@@ -18,18 +19,22 @@ class TaskBuilder(private val element: TypeElement, private val taskActionMap: H
     //    private var typeVariable: KClass<out Any>
     private var typeVariable: String  // 因为apt过程没有KClass或者Class的概念，因此只能通过字符串传入
     private var dependOnArray: Array<String>
+    private var callMainThread: Boolean
+    private var blockMainThread: Boolean
 
     init {
         val annotation = element.getAnnotation(Task::class.java)
         generateTaskName = annotation.name
         typeVariable = annotation.typeVariable
         dependOnArray = annotation.dependOn
+        callMainThread = annotation.callMainThread
+        blockMainThread = annotation.blockMainThread
 
-        println("TaskBuilder---generateTaskName = $generateTaskName, typeVariable = $typeVariable, BOOLEAN = ${BOOLEAN.canonicalName}")
+        println("TaskBuilder#init, generateTaskName = $generateTaskName, typeVariable = $typeVariable, callMainThread = $callMainThread, blockMainThread = $blockMainThread")
 
         dependOnArray.forEach {
             // TaskBuilder---dependOnArray = com.mars.infra.lego.test.action2.ThirdAction
-            println("TaskBuilder---dependOnArray = $it")
+            println("TaskBuilder#init, dependOnArray = $it")
         }
         taskActionMap[element.toString()] = generateTaskName
     }
@@ -63,8 +68,23 @@ class TaskBuilder(private val element: TypeElement, private val taskActionMap: H
         FunSpec.builder("getTaskName")
             .addModifiers(KModifier.OVERRIDE)
             .returns(String::class)
-//            .addStatement("return %S", generateTaskName)
             .addStatement("return %T::class.java.name", ClassName(PACKAGE_NAME, generateTaskName))
+    }
+
+    private val callMainThreadFunSpec by lazy {
+        FunSpec.builder("callOnMainThread")
+            .addModifiers(KModifier.OVERRIDE)
+            .returns(Boolean::class)
+            .addStatement("return %L", callMainThread)
+            .build()
+    }
+
+    private val blockMainThreadFunSpec by lazy {
+        FunSpec.builder("blockMainThread")
+            .addModifiers(KModifier.OVERRIDE)
+            .returns(Boolean::class)
+            .addStatement("return %L", blockMainThread)
+            .build()
     }
 
 
@@ -83,6 +103,15 @@ class TaskBuilder(private val element: TypeElement, private val taskActionMap: H
             )
             .addFunction(performTaskFunSpecBuilder.build())
             .addFunction(getTaskNameFunSpecBuilder.build())
+
+        // 默认时true，只有等于false时，子类复写
+        callMainThread.no {
+            typeSpecBuilder.addFunction(callMainThreadFunSpec)
+        }
+        // 默认是false，只有等于true时，子类复写
+        blockMainThread.yes {
+            typeSpecBuilder.addFunction(blockMainThreadFunSpec)
+        }
 
         dependOnArray.isNotEmpty().yes {
             val dependOnList = arrayListOf<String>()

@@ -23,7 +23,7 @@ LEGO：谐音 LET IT GO，同时将启动任务分成单独的个体，类似于
 
 ### VERSION 3.0   
 主要任务：apt实现Startup生成、分组、分阶段
-- [ ] 利用APT自动生成启动Task
+- [x] 利用APT自动生成启动Task
 定义任务接口，业务方只需要定义具体的Task，其他的操作交给框架实现
 ```Kotlin
 interface Action<T> {
@@ -39,5 +39,5 @@ class TestAction: Action<String?> {
 }
 ```
 - [ ] 注解定义任务执行的生命周期
-- [ ] 注解定义依赖关系
+- [x] 注解定义依赖关系
 - [ ] 注解定义分组

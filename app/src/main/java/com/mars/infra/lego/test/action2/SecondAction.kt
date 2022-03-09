@@ -1,6 +1,7 @@
 package com.mars.infra.lego.test.action2
 
 import android.util.Log
+import com.mars.infra.lego.annotation.TYPE_UNIT
 import com.mars.infra.lego.annotation.Task
 import com.mars.infra.lego.api.Action
 
@@ -9,8 +10,9 @@ import com.mars.infra.lego.api.Action
  */
 @Task(
     name = "SecondGenerateTask",
-    typeVariable = "kotlin.Unit",
-    dependOn = ["com.mars.infra.lego.test.action2.ThirdAction", "com.mars.infra.lego.test.action2.FirstAction"])
+    typeVariable = TYPE_UNIT,
+    dependOn = ["com.mars.infra.lego.test.action2.ThirdAction", "com.mars.infra.lego.test.action2.FirstAction"],
+    callMainThread = false)
 class SecondAction: Action<Unit> {
 
     override fun performAction() {
