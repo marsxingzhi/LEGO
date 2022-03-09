@@ -35,13 +35,17 @@ class LegoProcessor : AbstractProcessor() {
     ): Boolean {
         env ?: return false
         val taskMap = hashMapOf<Element, TaskBuilder>()
+        val taskActionMap = hashMapOf<String, String>()
         env.getElementsAnnotatedWith(Task::class.java)
             .filterIsInstance<TypeElement>()
             .forEach { element ->
                 // LegoProcessor---element = com.mars.infra.lego.test.action2.FirstAction
                 println("LegoProcessor---element = $element")
-                taskMap[element] = TaskBuilder(element)
+                taskMap[element] = TaskBuilder(element, taskActionMap)
             }
+        taskActionMap.entries.forEach { entry ->
+            println("action = ${entry.key}, generateTask = ${entry.value}")
+        }
         taskMap.values.forEach { taskBuilder ->
             taskBuilder.build(ProcessorManager.filer)
         }

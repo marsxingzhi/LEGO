@@ -1,5 +1,6 @@
 package com.mars.infra.lego.test.action2
 
+import android.util.Log
 import com.mars.infra.lego.annotation.Task
 import com.mars.infra.lego.api.Action
 
@@ -12,7 +13,9 @@ import com.mars.infra.lego.api.Action
 class FirstAction: Action<Boolean> {
 
     override fun performAction(): Boolean {
+        Log.e("mars", "FirstAction performAction start")
         Thread.sleep(1000)
+        Log.e("mars", "FirstAction performAction end")
         return true
     }
 }
