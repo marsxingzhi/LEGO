@@ -3,6 +3,7 @@ package com.mars.infra.lego.test.action2
 import android.util.Log
 import com.mars.infra.lego.annotation.TYPE_BOOLEAN
 import com.mars.infra.lego.annotation.Task
+import com.mars.infra.lego.annotation.WorkerThread
 import com.mars.infra.lego.api.Action
 
 /**

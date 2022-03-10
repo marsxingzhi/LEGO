@@ -41,3 +41,30 @@ class TestAction: Action<String?> {
 - [ ] 注解定义任务执行的生命周期
 - [x] 注解定义依赖关系
 - [ ] 注解定义分组
+
+### USAGE   
+定义具体的任务逻辑
+```kotlin
+@Task(name = "FirstGenerateTask", typeVariable = TYPE_BOOLEAN)
+class FirstAction: Action<Boolean> {
+
+    override fun performAction(): Boolean {
+        Log.e("mars", "FirstAction performAction start")
+        Thread.sleep(1000)
+        Log.e("mars", "FirstAction performAction end")
+        return true
+    }
+}
+```  
+调用点
+```kotlin
+TaskManager.Builder()
+    .addTask(FirstGenerateTask())
+    .build()
+    .start()
+    .awaitMainThread()
+```  
+- @Task：标识启动执行的任务
+- @DependOn：标识当前任务依赖的任务
+- @WorkerThread：标识当前任务在哪个线程执行，如果是在主线程，则无需添加，默认主线程
+- @BlockMainThread：标识当前任务是否阻塞主线程，如果是，则添加，默认不阻塞

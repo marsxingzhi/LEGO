@@ -4,9 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import com.mars.infra.lego.generate.FirstGenerateTask
-import com.mars.infra.lego.generate.SecondGenerateTask
-import com.mars.infra.lego.generate.ThirdGenerateTask
+import com.mars.infra.lego.generate.*
 import com.mars.infra.lego.test.task.*
 
 class MainActivity : AppCompatActivity() {
@@ -35,6 +33,8 @@ class MainActivity : AppCompatActivity() {
             .addTask(SecondGenerateTask())
             .addTask(ThirdGenerateTask())
             .addTask(FirstGenerateTask())
+            .addTask(FourGenerateTask())
+            .addTask(FiveGenerateTask())
             .build()
             .start()
             .awaitMainThread()
