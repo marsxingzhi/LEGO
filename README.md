@@ -41,6 +41,7 @@ class TestAction: Action<String?> {
 - [ ] 注解定义任务执行的生命周期
 - [x] 注解定义依赖关系
 - [ ] 注解定义分组
+- [ ] 任务重复执行判断
 
 ### USAGE   
 定义具体的任务逻辑
@@ -55,11 +56,71 @@ class FirstAction: Action<Boolean> {
         return true
     }
 }
+
+// 依赖ThirdAction、FirstAction任务的执行；在子线程执行
+@Task(name = "SecondGenerateTask", typeVariable = TYPE_UNIT)
+@DependOn(dependencies = 
+[
+    "com.mars.infra.lego.test.action2.ThirdAction", 
+    "com.mars.infra.lego.test.action2.FirstAction"
+    ])
+@WorkerThread(false)
+class SecondAction: Action<Unit> {
+
+    override fun performAction() {
+        Log.e("mars", "SecondAction performAction start")
+        Thread.sleep(5000)
+        Log.e("mars", "SecondAction performAction end")
+    }
+}
+
+// 阻塞主线程，主线程需要等待该任务执行完成后，才能继续执行
+@Task(name = "ThirdGenerateTask", typeVariable = TYPE_INT)
+@BlockMainThread
+class ThirdAction: Action<Int> {
+
+    override fun performAction(): Int {
+        Log.e("mars", "ThirdAction performAction start")
+        Thread.sleep(2000)
+        Log.e("mars", "ThirdAction performAction end")
+        return -1
+    }
+}
+
+@Task(name = "FourGenerateTask", typeVariable = TYPE_UNIT)
+@DependOn(dependencies = [
+    "com.mars.infra.lego.test.action2.SecondAction"])
+class FourAction : Action<Unit> {
+
+    override fun performAction() {
+        Log.e("mars", "FourAction---performAction---start")
+        Thread.sleep(30)
+        Log.e("mars", "FourAction---performAction---end")
+    }
+}
+
+@Task(name = "FiveGenerateTask", typeVariable = TYPE_ANY)
+@DependOn(dependencies = [
+    "com.mars.infra.lego.test.action2.FourAction"])
+class FiveAction : Action<Any> {
+
+    override fun performAction(): Any {
+        Log.e("mars", "FiveAction---performAction---start")
+        Thread.sleep(30)
+        Log.e("mars", "FiveAction---performAction---end")
+        return Any()
+    }
+}
 ```  
 调用点
 ```kotlin
 TaskManager.Builder()
+    .addTask(SecondGenerateTask())
+    .addTask(ThirdGenerateTask())
     .addTask(FirstGenerateTask())
+    .addTasks(
+        arrayListOf(FourGenerateTask(), FiveGenerateTask())
+    )
     .build()
     .start()
     .awaitMainThread()

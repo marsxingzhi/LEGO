@@ -33,8 +33,9 @@ class MainActivity : AppCompatActivity() {
             .addTask(SecondGenerateTask())
             .addTask(ThirdGenerateTask())
             .addTask(FirstGenerateTask())
-            .addTask(FourGenerateTask())
-            .addTask(FiveGenerateTask())
+            .addTasks(
+                arrayListOf(FourGenerateTask(), FiveGenerateTask())
+            )
             .build()
             .start()
             .awaitMainThread()
